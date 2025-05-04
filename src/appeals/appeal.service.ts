@@ -22,7 +22,6 @@ export class AppealService {
             await Appeal.create(newAppeal);
 
         } catch (e) {
-            console.log(e)
             throw new Error(`Appeal not creating. Error: ${e}`)
         }
     }
@@ -40,7 +39,6 @@ export class AppealService {
             })
 
         } catch (e) {
-            console.log(e)
             throw new Error(`Appeal not starting. Error: ${e}`)
         }
     }
@@ -59,7 +57,6 @@ export class AppealService {
             })
 
         } catch (e) {
-            console.log(e)
             throw new Error(`Appeal not completed. Error: ${e}`)
         }
     }
@@ -78,7 +75,6 @@ export class AppealService {
             })
 
         } catch (e) {
-            console.log(e)
             throw new Error(`Appeal not canceled. Error: ${e}`)
         }
     }
@@ -108,7 +104,6 @@ export class AppealService {
 
             return appeals;
         } catch (e) {
-            console.log(e);
             throw new Error(`Error getting appeals: ${e}`);
         }
     }
@@ -124,7 +119,6 @@ export class AppealService {
                 }
             })
         } catch (e) {
-            console.log(e);
             throw new Error(`Error cancel: ${e}`);
         }
     }
