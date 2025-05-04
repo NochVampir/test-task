@@ -1,12 +1,12 @@
-import { AppealInterface, AppealStatus, CreateAppealInterface} from './types';
-import {Appeal} from '../database/models/appeal.model'
-import { Op, CreationAttributes } from 'sequelize';
+import {AppealStatus} from './types';
+const {Appeal} = require('../database/models/appeal.model')
+import {Op} from 'sequelize';
 
 export class AppealService {
 
     static async create(title?: string, description?: string){
         try {
-            const newAppeal: CreationAttributes<Appeal> = {
+            const newAppeal = {
                 title,
                 description,
                 status: AppealStatus.NEW,
@@ -28,11 +28,12 @@ export class AppealService {
     }
 
     static async start(id: string){
+        const newAppeal = {
+            status: AppealStatus.IN_PROGRESS,
+            updatedAt: new Date(),
+        }
         try {
-            await Appeal.update({
-                status: AppealStatus.IN_PROGRESS,
-                updatedAt: new Date(),
-            }, {
+            await Appeal.update(newAppeal, {
                 where: {
                     id: id,
                 }
@@ -44,12 +45,14 @@ export class AppealService {
         }
     }
 
-    static async complete(id: string, answer?: string){
+    static async complete(id: string, description?: string){
+        const newAppeal = {
+            description,
+            status: AppealStatus.COMPLETED,
+            updatedAt: new Date(),
+        }
         try {
-            await Appeal.update({
-                status: AppealStatus.COMPLETED,
-                updatedAt: new Date(),
-            }, {
+            await Appeal.update(newAppeal, {
                 where: {
                     id: id,
                 }
@@ -61,12 +64,14 @@ export class AppealService {
         }
     }
 
-    static async cancel(id: string) {
+    static async cancel(id: string, description?: string) {
+        const newAppeal = {
+            description,
+            status: AppealStatus.CANCELLED,
+            updatedAt: new Date(),
+        }
         try {
-            await Appeal.update({
-                status: AppealStatus.CANCELLED,
-                updatedAt: new Date(),
-            }, {
+            await Appeal.update(newAppeal, {
                 where: {
                     id: id,
                 }
@@ -111,7 +116,7 @@ export class AppealService {
     static async cancelAllInProgress(){
         try {
             await Appeal.update({
-                status: AppealStatus.RESOLVED,
+                status: AppealStatus.CANCELLED,
                 updatedAt: new Date(),
             }, {
                 where: {

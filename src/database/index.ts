@@ -1,28 +1,8 @@
-import { Dialect, Sequelize } from 'sequelize';
-import { dbConfig } from './config';
+const { Sequelize } = require('sequelize');
+const {dbConfig} = require('./config')
 
-export const sequelize = new Sequelize(
-    dbConfig.database,
-    dbConfig.username,
-    dbConfig.password,
-    {
-        host: dbConfig.host,
-        port: dbConfig.port,
-        dialect: dbConfig.dialect,
-        pool: dbConfig.pool,
-        logging: console.log,
-    }
-);
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    dialect: dbConfig.dialect,
+});
 
-export const initDatabase = async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection');
-        
-        await sequelize.sync();
-        console.log('Synchronized');
-    } catch (error) {
-        console.error('Connection error:', error);
-        throw error;
-    }
-}; 
+module.exports.db = sequelize;
